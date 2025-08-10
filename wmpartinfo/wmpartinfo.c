@@ -6,6 +6,8 @@
 #include <locale.h>
 #include <wchar.h>
 
+#define SECTOR_SIZE 0x200
+
 typedef struct __attribute__((packed)) _partition {
     uint8_t attributes;
     uint8_t start_chs[3];
@@ -39,9 +41,9 @@ typedef struct __attribute__((packed)) _wmpart_hdr {
     char magic[8];
     int16_t name[0x20]; // wchar_t, 0x40
     uint32_t unk1;
-    uint32_t offset_maybe;
+    uint32_t offset_sector;
     uint32_t unk2;
-    uint32_t size_maybe;
+    uint32_t size_sectors;
     uint32_t unk3;
     uint8_t unk4[0x8]; // seems to match unk4 from wmstore_hdr
     uint32_t partition_type;
@@ -162,9 +164,9 @@ int main(int argc, char **argv) {
         printf("WMPART %i:\n", parts);
         printf("  Name: %s\n", cheap_wchar_to_ascii(part_hdr.name));
         printf("  Unk1: 0x%x\n", part_hdr.unk1);
-        printf("  Offset(?): 0x%x\n", part_hdr.offset_maybe);
+        printf("  Offset: 0x%x (@ 0x%x)\n", part_hdr.offset_sector, part_hdr.offset_sector * SECTOR_SIZE);
         printf("  Unk2: 0x%x\n", part_hdr.unk2);
-        printf("  Size(?): 0x%x\n", part_hdr.size_maybe);
+        printf("  Size: 0x%x (0x%x)\n", part_hdr.size_sectors, part_hdr.size_sectors * SECTOR_SIZE);
         printf("  Unk3: 0x%x\n", part_hdr.unk3);
         printf("  Unk4: ");
         hexdump(part_hdr.unk4, sizeof(part_hdr.unk4));
