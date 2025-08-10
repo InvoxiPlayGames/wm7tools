@@ -6,59 +6,11 @@
 #include <locale.h>
 #include <wchar.h>
 
+#include "../common/guid.h"
+#include "../common/mbr.h"
+#include "../common/wmpartitions.h"
+
 #define SECTOR_SIZE 0x200
-
-typedef struct __attribute__((packed)) _partition {
-    uint8_t attributes;
-    uint8_t start_chs[3];
-    uint8_t type;
-    uint8_t end_chs[3];
-    uint32_t lba_start;
-    uint32_t num_sectors;
-} partition_t;
-
-typedef struct __attribute__((packed)) _mbr {
-    uint8_t bootstrap[0x1B8];
-    uint8_t disk_id[4];
-    uint8_t reserved[2];
-    partition_t partitions[4];
-    uint8_t signature[2];
-} mbr_t;
-
-typedef struct __attribute__((packed)) _wmstore_hdr {
-    char magic[8];
-    uint8_t guid[0x10];
-    int16_t name[0x20]; // wchar_t, 0x40
-    uint32_t unk1;
-    uint32_t unk2;
-    uint32_t unk3;
-    uint8_t unk4[0x8];
-    uint32_t unk5;
-    uint8_t padding[0x190];
-} wmstore_hdr_t;
-
-typedef struct __attribute__((packed)) _wmpart_hdr {
-    char magic[8];
-    int16_t name[0x20]; // wchar_t, 0x40
-    uint32_t unk1;
-    uint32_t offset_sector;
-    uint32_t unk2;
-    uint32_t size_sectors;
-    uint32_t unk3;
-    uint8_t unk4[0x8]; // seems to match unk4 from wmstore_hdr
-    uint32_t partition_type;
-    uint32_t unk5;
-    uint32_t unk6;
-    uint8_t padding[0x190];
-} wmpart_hdr_t;
-
-typedef struct _guid {
-    uint32_t p1;
-    uint16_t p2;
-    uint16_t p3;
-    uint16_t p4;
-    uint8_t p5[6];
-} guid_t;
 
 void print_guid(uint8_t *guid) {
     guid_t *id = (guid_t *)guid;
@@ -73,9 +25,12 @@ void hexdump(uint8_t *data, int len) {
     printf("\n");
 }
 
-char asciibuf[0x40];
+// i didn't want to do it like this, but wchar_t wasn't playing ball
+// and it's very unlikely a partition name would be incorrect when run through this
+// so let's just try it and see
 char *cheap_wchar_to_ascii(int16_t *chars) {
     int i = 0;
+    static char asciibuf[0x40];
     memset(asciibuf, 0, sizeof(asciibuf));
     while (*chars != 0 && i < sizeof(asciibuf)) {
         asciibuf[i] = (char)*chars;
@@ -134,7 +89,6 @@ int main(int argc, char **argv) {
     }
 
     // print info about the store
-    setlocale(LC_ALL, "C.UTF-8");
     printf("WMSTORE:\n");
     printf("  Name: %s\n", cheap_wchar_to_ascii(store_hdr.name));
     printf("  GUID: ");
