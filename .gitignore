@@ -1,0 +1,7 @@
+bin
+.DS_Store
+*.dSYM
+*.img
+*.esco
+*.bin
+*.nb
