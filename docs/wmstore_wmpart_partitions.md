@@ -19,7 +19,7 @@ Total size: 0x200
 | `0x58` | uint32        | Unknown (seen as 0x20)                                |
 | `0x5C` | uint32        | Unknown (seen as 0x0)                                 |
 | `0x60` | uint32        | Unknown (seen as 0x1)                                 |
-| `0x64` | byte[0x8] (?) | Unknown 8 byte value, varies (possibly a timestamp?)  |
+| `0x64` | uint64        | FILETIME timestamp of store creation                  |
 | `0x6C` | uint32        | Unknown (seen as 0x0)                                 |
 | `0x70` | byte[0x190]   | Padding                                               |
 
@@ -38,7 +38,7 @@ Total size: 0x200
 | `0x50` | uint32        | Unknown                                                |
 | `0x54` | uint32        | Partition size in sector count                         |
 | `0x58` | uint32        | Unknown                                                |
-| `0x5C` | byte[0x8] (?) | Unknown 8 byte value, same as the one in WMSTORE.      |
+| `0x5C` | uint64        | FILETIME timestamp of partition creation               |
 | `0x64` | uint32        | "Partition type"                                       |
 | `0x68` | uint32        | Unknown                                                |
 | `0x6C` | uint32        | Unknown, possibly flags?                               |

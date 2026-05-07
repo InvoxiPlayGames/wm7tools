@@ -10,7 +10,7 @@ typedef struct __attribute__((packed)) _wmstore_hdr {
     uint32_t unk1;
     uint32_t unk2;
     uint32_t unk3;
-    uint8_t unk4[0x8];
+    uint64_t store_timestamp;
     uint32_t unk5;
     uint8_t padding[0x190];
 } wmstore_hdr_t;
@@ -23,7 +23,7 @@ typedef struct __attribute__((packed)) _wmpart_hdr {
     uint32_t unk2;
     uint32_t size_sectors;
     uint32_t unk3;
-    uint8_t unk4[0x8]; // seems to match unk4 from wmstore_hdr
+    uint64_t part_timestamp; // matches wmstore.store_timestamp
     uint32_t partition_type;
     uint32_t unk5;
     uint32_t unk6;
