@@ -96,8 +96,7 @@ int main(int argc, char **argv) {
     printf("  Unk1: 0x%x\n", store_hdr.unk1);
     printf("  Unk2: 0x%x\n", store_hdr.unk2);
     printf("  Unk3: 0x%x\n", store_hdr.unk3);
-    printf("  Unk4: ");
-    hexdump(store_hdr.unk4, sizeof(store_hdr.unk4));
+    printf("  Timestamp: TODO\n"); // store_hdr.timestamp
     printf("  Unk5: 0x%x\n", store_hdr.unk5);
 
     // read partitions - there isn't a count afaict so just do it until we stop seeing partitions
@@ -122,8 +121,7 @@ int main(int argc, char **argv) {
         printf("  Unk2: 0x%x\n", part_hdr.unk2);
         printf("  Size: 0x%x (0x%x)\n", part_hdr.size_sectors, part_hdr.size_sectors * SECTOR_SIZE);
         printf("  Unk3: 0x%x\n", part_hdr.unk3);
-        printf("  Unk4: ");
-        hexdump(part_hdr.unk4, sizeof(part_hdr.unk4));
+        printf("  Timestamp: TODO\n"); // part_hdr.timestamp
         printf("  Partition Type: 0x%x\n", part_hdr.partition_type);
         printf("  Unk5: 0x%x\n", part_hdr.unk5);
         printf("  Unk6: 0x%x\n", part_hdr.unk6);

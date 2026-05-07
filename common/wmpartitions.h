@@ -10,10 +10,21 @@ typedef struct __attribute__((packed)) _wmstore_hdr {
     uint32_t unk1;
     uint32_t unk2;
     uint32_t unk3;
-    uint64_t store_timestamp;
+    uint64_t timestamp;
     uint32_t unk5;
     uint8_t padding[0x190];
 } wmstore_hdr_t;
+
+typedef enum _wmpart_type {
+    wmpart_dos3_fat = 0x04,
+    wmpart_unk_0x1B = 0x1B, // USP
+    wmpart_boot = 0x20,
+    wmpart_xip_rom = 0x22,
+    wmpart_xip_ram = 0x23,
+    wmpart_imgfs = 0x25,
+    wmpart_unk_0x29 = 0x29, // BSP/DPP
+    wmpart_padding = 0x2A, // padding
+} wmpart_type_e;
 
 typedef struct __attribute__((packed)) _wmpart_hdr {
     char magic[8];
@@ -23,7 +34,7 @@ typedef struct __attribute__((packed)) _wmpart_hdr {
     uint32_t unk2;
     uint32_t size_sectors;
     uint32_t unk3;
-    uint64_t part_timestamp; // matches wmstore.store_timestamp
+    uint64_t timestamp; // matches wmstore.timestamp
     uint32_t partition_type;
     uint32_t unk5;
     uint32_t unk6;

@@ -43,3 +43,16 @@ Total size: 0x200
 | `0x68` | uint32        | Unknown                                                |
 | `0x6C` | uint32        | Unknown, possibly flags?                               |
 | `0x70` | byte[0x190]   | Padding                                                |
+
+### Partition types
+
+| Type   | Description           |
+| ------ | --------------------- |
+| `0x04` | DOS3 FAT (User)       |
+| `0x1B` | Unknown (USP)         |
+| `0x20` | Boot partition (SLDR) |
+| `0x22` | XIP from ROM (unused) |
+| `0x23` | XIP from RAM (NK)     |
+| `0x25` | IMGFS                 |
+| `0x29` | Unknown (BSP/DPP)     |
+| `0x2A` | Padding (PADUSER)     |
